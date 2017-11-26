@@ -38,7 +38,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: ${APP_NAME}:"${JENKINS_VERSION_NUMBER}"
+        name: "${APP_NAME}:${JENKINS_VERSION_NUMBER}"
 
 parameters:
   - name: APP_NAME
