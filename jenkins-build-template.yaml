@@ -1,0 +1,51 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: jenkins-template
+  annotations:
+    description: This template shows how to create a exporter jenkins application in openshift
+      origin v3
+    iconClass: icon-jenkins
+    tags: instant-app,jenkins
+objects:
+  
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}
+    labels:
+      name: ${APP_NAME}
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: 'true'
+  spec:
+    source:
+      type: Git
+      git:
+        uri: ${GIT_BUILD_PROJECT}
+      contextDir: dockerfile
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: Dockerfile
+        env:
+          - name: "JENKINS_VERSION_NUMBER"
+            value: "${JENKINS_VERSION_NUMBER}"
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:"${JENKINS_VERSION_NUMBER}"
+
+parameters:
+  - name: APP_NAME
+    value: "jenkins"
+  - name: GIT_BUILD_PROJECT
+    value: "https://github.com/ust-global-spain/jenkins-openshift-image.git"
+  - name: JENKINS_VERSION_NUMBER
+    value: "2.73.3"
+labels:
+  template: application-template-jenkins
