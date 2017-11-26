@@ -19,6 +19,16 @@ endif
 .PHONY: build
 build:
 	VERSIONS=$(VERSIONS) hack/build.sh $(OS) $(VERSION)
+	
+build-jenkins-2: ## Build docker image
+	@docker build -t jenkins-openshift-image:2  ./2
+	
+install-build-template: ## Build docker image
+	@oc new-app -f jenkins-build-template.yaml
+
+run-docker-ti: ## Run the image interactive
+	docker run -ti --rm ${DOCKER_REPO_SNAPSHOTS}${DOCKER_IMAGE} /bin/bash
+
 
 .PHONY: test
 test:
