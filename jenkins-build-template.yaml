@@ -27,7 +27,7 @@ objects:
       type: Git
       git:
         uri: ${GIT_BUILD_PROJECT}
-      contextDir: dockerfile
+      contextDir: 2
     strategy:
       type: Docker
       dockerStrategy:
